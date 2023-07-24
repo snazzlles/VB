@@ -1,0 +1,98 @@
+Sub BetterWordScraper()
+
+Dim FName As String, FD As FileDialog
+Dim WApp As Object, WDoc As Object, WDR As Object
+Dim strFind As String
+Dim rngFind As Object
+Dim bFound As Boolean
+Dim iCellCounter As Long
+
+    Set ExR = Selection 'sets the scrape location to the current location in Excel sheet
+    
+    'Selecting the word doc
+    Set FD = Application.FileDialog(msoFileDialogOpen)
+    FD.Show
+    If FD.SelectedItems.Count <> 0 Then
+        FName = FD.SelectedItems(1)
+    Else
+        Exit Sub
+    End If
+    
+    'Opening the Word Doc
+    Set WApp = CreateObject("Word.Application")
+    Set WDoc = WApp.Documents.Open(FName)
+
+
+    'Finding Mechanism
+    'String 1 Find
+    strFind = "START_OF_STRING*END_OF_STRING"
+    
+    bFound = False
+    iCellCounter = 1
+    Set rngFind = WApp.ActiveDocument.Content
+    With rngFind.Find
+        .ClearAllFuzzyOptions
+        .ClearFormatting
+        .ClearHitHighlight
+        .Format = False
+        .MatchWildcards = True
+        .Text = strFind
+        .wrap = wdFindStop
+        Do
+            bFound = .Execute
+            If bFound Then
+                ExR(iCellCounter, 1) = rngFind.Text
+                iCellCounter = iCellCounter + 1
+            End If
+        Loop While bFound
+    End With
+    '-----
+    'String 2 Find
+    strFind = "START_OF_STRING*END_OF_STRING"
+    
+    bFound = False
+    iCellCounter = 1
+    Set rngFind = WApp.ActiveDocument.Content
+    With rngFind.Find
+        .ClearAllFuzzyOptions
+        .ClearFormatting
+        .ClearHitHighlight
+        .Format = False
+        .MatchWildcards = True
+        .Text = strFind
+        .wrap = wdFindStop
+        Do
+            bFound = .Execute
+            If bFound Then
+                ExR(iCellCounter, 2) = rngFind.Text
+                iCellCounter = iCellCounter + 1
+            End If
+        Loop While bFound
+    End With
+    
+    '----
+    'String 3 Find
+    strFind = "START_OF_STRING*END_OF_STRING"
+    
+    bFound = False
+    iCellCounter = 1
+    Set rngFind = WApp.ActiveDocument.Content
+    With rngFind.Find
+        .ClearAllFuzzyOptions
+        .ClearFormatting
+        .ClearHitHighlight
+        .Format = False
+        .MatchWildcards = True
+        .Text = strFind
+        .wrap = wdFindStop
+        Do
+            bFound = .Execute
+            If bFound Then
+                ExR(iCellCounter, 3) = rngFind.Text
+                iCellCounter = iCellCounter + 1
+            End If
+        Loop While bFound
+    End With
+
+
+End Sub
